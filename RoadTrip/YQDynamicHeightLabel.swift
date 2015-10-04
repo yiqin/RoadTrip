@@ -1,0 +1,50 @@
+//
+//  YQDynamicHeightLabel.swift
+//  RoadTrip
+//
+//  Created by Yi Qin on 4/23/15.
+//  Copyright (c) 2015 Yi Qin. All rights reserved.
+//
+
+import UIKit
+
+/// This is not a perfect method. It supports to use Protocol or Extension to handle this.
+class YQDynamicHeightLabel: UILabel {
+    
+    var yPadding:CGFloat = 2
+    var maxNumberOfLines:Int = 0
+    
+    init(){
+        super.init(frame: CGRectZero)
+    }
+    
+    /// Resize UILabel and update the frame
+    func update(frame:CGRect, font:UIFont, text:String) {
+        
+        self.font = font
+        self.text = text
+        numberOfLines = 0
+        let maxHeight:CGFloat = 1024.0
+        self.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, maxHeight)
+        sizeToFit()
+        var labelHeight:CGFloat = self.frame.size.height
+        
+        if maxNumberOfLines > 0 {
+            let tempLabel = UILabel(frame: frame)
+            tempLabel.font = font
+            tempLabel.text = "One"
+            tempLabel.sizeToFit()
+            if (labelHeight > tempLabel.frame.size.height*CGFloat(maxNumberOfLines)) {
+                labelHeight = tempLabel.frame.size.height*CGFloat(maxNumberOfLines)
+            }
+            
+        }
+        
+        self.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, labelHeight+2*yPadding)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+}
